@@ -21,16 +21,35 @@ var GifRequest = {
   ajaxRequest(endpoint) {
     this.requestPromise(endpoint)
     .then(function(val){
-      console.log(val.data);
+      var gifsArr = val.data;
+      console.log(gifsArr);
+      displayGifs.generateHTML(gifsArr);
     })
     .catch(function(err){
       console.log(err);
-    })
+    });
+  }
+};
+
+var displayGifs = {
+  generateHTML(gifs = []) {
+    var ul = document.querySelector('#trending ul');
+    ul.innerHTML = gifs.map( this.display ).join('');
+  },
+  display(gif) {
+    var gifURL = gif.images.downsized.url;
+    return `
+      <li>
+        <a href="${gifURL}">
+          <img src="${gifURL}" alt="#">
+        </a>
+      </li>
+    `;
   }
 };
 
 var trendingGifs = Object.create(GifRequest);
-var trendingEndpoint = "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC";
+var trendingEndpoint = "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC&limit=50";
 trendingGifs.ajaxRequest(trendingEndpoint);
 
 var searchedGifs = Object.create(GifRequest);
@@ -39,7 +58,7 @@ searchedGifs.inputListener = function() {
   var searchInput = document.querySelector('#searchInput');
   function searchCB(e) {
     if (e.keyCode === 13) {
-      var searchEndpoint = `http://api.giphy.com/v1/gifs/search?q=${this.value}&api_key=dc6zaTOxFJmzC`;
+      var searchEndpoint = `http://api.giphy.com/v1/gifs/search?q=${this.value}&api_key=dc6zaTOxFJmzC&limit=50`;
       self.ajaxRequest(searchEndpoint);
     }
   }
