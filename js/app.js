@@ -1,9 +1,7 @@
 "use strict"
 
-var searchGIF = document.querySelector('#searchGIF');
-
 var GifRequest = {
-  ajaxReq(url) {
+  requestPromise(url) {
     return new Promise( function(resolve, reject){
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url);
@@ -19,36 +17,32 @@ var GifRequest = {
         }
       }
     } );
-  }
-};
-
-var trendingGIFobj = Object.create(GifRequest);
-trendingGIFobj.requestTrendingGifs = function() {
-  var trendingGIFS = "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC";
-  this.ajaxReq(trendingGIFS)
-  .then(function(val){
-    console.log(val);
-  })
-  .catch(function(err){
-    console.log(err);
-  })
-}
-
-var searchGIFobj = Object.create(GifRequest);
-searchGIFobj.searchGIFEvent = function() {
-  return searchGIF.addEventListener('keyup', this.requestGIF);
-};
-searchGIFobj.requestGIF = function(e) {
-  if (e.keyCode === 13) {
-    searchGIFobj.ajaxReq(`http://api.giphy.com/v1/gifs/search?q=${this.value}&api_key=dc6zaTOxFJmzC`)
+  },
+  ajaxRequest(endpoint) {
+    this.requestPromise(endpoint)
     .then(function(val){
-      console.log(val);
+      console.log(val.data);
     })
-    .catch( function(err){
+    .catch(function(err){
       console.log(err);
-    } )
+    })
   }
-}
+};
 
-trendingGIFobj.requestTrendingGifs();
-searchGIFobj.searchGIFEvent();
+var trendingGifs = Object.create(GifRequest);
+var trendingEndpoint = "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC";
+trendingGifs.ajaxRequest(trendingEndpoint);
+
+var searchedGifs = Object.create(GifRequest);
+searchedGifs.inputListener = function() {
+  var self = this;
+  var searchInput = document.querySelector('#searchInput');
+  function searchCB(e) {
+    if (e.keyCode === 13) {
+      var searchEndpoint = `http://api.giphy.com/v1/gifs/search?q=${this.value}&api_key=dc6zaTOxFJmzC`;
+      self.ajaxRequest(searchEndpoint);
+    }
+  }
+  searchInput.addEventListener('keyup', searchCB);
+}
+searchedGifs.inputListener();
