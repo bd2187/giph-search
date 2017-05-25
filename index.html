@@ -3,15 +3,29 @@
   <head>
     <meta charset="UTF-8">
     <title>Giph</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
     <div class="wrap">
-      <input id="searchInput" type="search" placeholder="Search GIFs"></input>
-      <!-- <input type="submit"> -->
-      <div id="trending">
-        <ul>
-        </ul>
-      </div>
+      <header>
+        <h1 class="logo">Giph</h1>
+        <div class="searchBox">
+          <input id="searchInput" type="search" placeholder="Search GIFs"></input>
+          <button>
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
+        </div> <!-- /.searchBox -->
+      </header> <!-- /.container -->
+
+      <section>
+        <div id="trending">
+          <ul>
+          </ul>
+        </div>
+      </section>
+
 
     </div> <!-- /.wrap -->
     <script src="js/app.js"></script>

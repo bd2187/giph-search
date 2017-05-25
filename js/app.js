@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 var GifRequest = {
   requestPromise(url) {
@@ -50,6 +50,7 @@ var displayGifs = {
 
 var trendingGifs = Object.create(GifRequest);
 var trendingEndpoint = "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC&limit=50";
+
 trendingGifs.ajaxRequest(trendingEndpoint);
 
 var searchedGifs = Object.create(GifRequest);
@@ -64,4 +65,5 @@ searchedGifs.inputListener = function() {
   }
   searchInput.addEventListener('keyup', searchCB);
 }
+
 searchedGifs.inputListener();
